@@ -1,4 +1,4 @@
-import 'package:dsw_aplikacje_mobilne_projekt/screens/register_screen.dart';
+import 'package:dsw_aplikacje_mobilne_projekt/screens/login_screen.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -17,7 +17,7 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.blueAccent),
         useMaterial3: true,
       ),
-      home: const RegisterScreen(),
+      home: const LoginScreen(),
     );
   }
 }

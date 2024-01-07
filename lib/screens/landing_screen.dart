@@ -5,21 +5,22 @@ class LandingScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text(
-              "Welcome 🎉",
-              style: Theme.of(context).textTheme.bodyLarge,
-            ),
-            const SizedBox(height: 10),
-            Text(
-              "Flutter",
-              style: Theme.of(context).textTheme.titleLarge,
-            ),
-          ],
+    return const Stack(
+      children: <Widget>[
+        Image(
+          image: AssetImage("assets/images/landing_background.png"),
         ),
+        Scaffold(
+          backgroundColor: Colors.transparent,
+          body: Center(
+            child: Image(
+              image: AssetImage("assets/images/logo.png"),
+              height: 250,
+              fit: BoxFit.fitHeight,
+            ),
+          ),
+        ),
+      ],
     );
   }
 }
