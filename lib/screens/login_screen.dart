@@ -6,16 +6,21 @@ class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
 
   @override
-  State<LoginScreen> createState() => _LoginScreenState();
+  State<LoginScreen> createState() {
+    return _LoginScreenState();
+  }
 }
 
 class _LoginScreenState extends State<LoginScreen> {
+  final _formKey = GlobalKey<FormState>();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: const Color(0xFFFFFFFF),
       body: SingleChildScrollView(
         child: Form(
+          key: _formKey,
           child: Container(
             margin: const EdgeInsets.symmetric(horizontal: 20),
             child: Column(
@@ -39,18 +44,29 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
                 const SizedBox(height: 46),
                 TextFormField(
+                  keyboardType: TextInputType.emailAddress,
+                  autocorrect: false,
+                  textCapitalization: TextCapitalization.none,
                   decoration: const InputDecoration(
                     labelText: "Email or User Name",
                     hintText: "Enter your email",
                     focusedBorder: OutlineInputBorder(
-                      borderSide:
-                          BorderSide(color: Color(0xFF9747FF), width: 2.0),
-                      borderRadius: BorderRadius.all(Radius.circular(20.0)),
+                      borderSide: BorderSide(
+                        color: Color(0xFF9747FF),
+                        width: 2.0,
+                      ),
+                      borderRadius: BorderRadius.all(
+                        Radius.circular(20.0),
+                      ),
                     ),
                     enabledBorder: OutlineInputBorder(
-                      borderSide:
-                          BorderSide(color: Color(0xFF471AA0), width: 2.0),
-                      borderRadius: BorderRadius.all(Radius.circular(20.0)),
+                      borderSide: BorderSide(
+                        color: Color(0xFF471AA0),
+                        width: 2.0,
+                      ),
+                      borderRadius: BorderRadius.all(
+                        Radius.circular(20.0),
+                      ),
                     ),
                     prefixIcon: Icon(
                       Icons.person_outlined,
@@ -61,6 +77,8 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
                 const SizedBox(height: 40),
                 TextFormField(
+                  obscureText: true,
+                  textCapitalization: TextCapitalization.none,
                   decoration: const InputDecoration(
                     labelText: "Password",
                     hintText: "Enter your password",
@@ -122,7 +140,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                   ),
                 ),
-                const SizedBox(height: 75),
+                const SizedBox(height: 60),
                 Text(
                   "Or sign in with",
                   style: Theme.of(context).textTheme.bodyMedium?.copyWith(
@@ -133,87 +151,99 @@ class _LoginScreenState extends State<LoginScreen> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Container(
-                      width: 50,
-                      height: 50,
-                      decoration: ShapeDecoration(
-                        shadows: [
-                          BoxShadow(
-                            color: Colors.black.withOpacity(0.2),
-                            blurRadius: 10,
-                            offset: const Offset(0, 5),
+                    TextButton(
+                      onPressed: () {},
+                      child: Container(
+                        width: 50,
+                        height: 50,
+                        decoration: ShapeDecoration(
+                          shadows: [
+                            BoxShadow(
+                              color: Colors.black.withOpacity(0.2),
+                              blurRadius: 10,
+                              offset: const Offset(0, 5),
+                            ),
+                          ],
+                          color: Colors.white,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(15),
                           ),
-                        ],
-                        color: Colors.white,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(15),
                         ),
-                      ),
-                      child: const Image(
-                        image: AssetImage("assets/images/google_logo.png"),
+                        child: const Image(
+                          image: AssetImage("assets/images/google_logo.png"),
+                        ),
                       ),
                     ),
-                    const SizedBox(width: 24),
-                    Container(
-                      width: 50,
-                      height: 50,
-                      decoration: ShapeDecoration(
-                        shadows: [
-                          BoxShadow(
-                            color: Colors.black.withOpacity(0.2),
-                            blurRadius: 10,
-                            offset: const Offset(0, 5),
+                    const SizedBox(width: 12),
+                    TextButton(
+                      onPressed: () {},
+                      child: Container(
+                        width: 50,
+                        height: 50,
+                        decoration: ShapeDecoration(
+                          shadows: [
+                            BoxShadow(
+                              color: Colors.black.withOpacity(0.2),
+                              blurRadius: 10,
+                              offset: const Offset(0, 5),
+                            ),
+                          ],
+                          color: Colors.white,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(15),
                           ),
-                        ],
-                        color: Colors.white,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(15),
                         ),
-                      ),
-                      child: const Image(
-                        image: AssetImage("assets/images/facebook_logo.png"),
+                        child: const Image(
+                          image: AssetImage("assets/images/facebook_logo.png"),
+                        ),
                       ),
                     ),
-                    const SizedBox(width: 24),
-                    Container(
-                      width: 50,
-                      height: 50,
-                      decoration: ShapeDecoration(
-                        shadows: [
-                          BoxShadow(
-                            color: Colors.black.withOpacity(0.2),
-                            blurRadius: 10,
-                            offset: const Offset(0, 5),
+                    const SizedBox(width: 12),
+                    TextButton(
+                      onPressed: () {},
+                      child: Container(
+                        width: 50,
+                        height: 50,
+                        decoration: ShapeDecoration(
+                          shadows: [
+                            BoxShadow(
+                              color: Colors.black.withOpacity(0.2),
+                              blurRadius: 10,
+                              offset: const Offset(0, 5),
+                            ),
+                          ],
+                          color: Colors.white,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(15),
                           ),
-                        ],
-                        color: Colors.white,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(15),
                         ),
-                      ),
-                      child: const Image(
-                        image: AssetImage("assets/images/twitter_logo.png"),
+                        child: const Image(
+                          image: AssetImage("assets/images/twitter_logo.png"),
+                        ),
                       ),
                     ),
-                    const SizedBox(width: 24),
-                    Container(
-                      width: 50,
-                      height: 50,
-                      decoration: ShapeDecoration(
-                        shadows: [
-                          BoxShadow(
-                            color: Colors.black.withOpacity(0.2),
-                            blurRadius: 10,
-                            offset: const Offset(0, 5),
+                    const SizedBox(width: 12),
+                    TextButton(
+                      onPressed: () {},
+                      child: Container(
+                        width: 50,
+                        height: 50,
+                        decoration: ShapeDecoration(
+                          shadows: [
+                            BoxShadow(
+                              color: Colors.black.withOpacity(0.2),
+                              blurRadius: 10,
+                              offset: const Offset(0, 5),
+                            ),
+                          ],
+                          color: Colors.white,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(15),
                           ),
-                        ],
-                        color: Colors.white,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(15),
                         ),
-                      ),
-                      child: const Image(
-                        image: AssetImage("assets/images/linkedin_logo.png"),
+                        child: const Image(
+                          image: AssetImage("assets/images/linkedin_logo.png"),
+                        ),
                       ),
                     ),
                   ],

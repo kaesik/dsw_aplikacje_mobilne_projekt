@@ -5,10 +5,24 @@ class RegisterScreen extends StatefulWidget {
   const RegisterScreen({super.key});
 
   @override
-  State<RegisterScreen> createState() => _RegisterScreenState();
+  State<RegisterScreen> createState() {
+    return _RegisterScreenState();
+  }
 }
 
 class _RegisterScreenState extends State<RegisterScreen> {
+  final _formKey = GlobalKey<FormState>();
+  final TextEditingController _pass = TextEditingController();
+  final TextEditingController _confirmPass = TextEditingController();
+
+  var _isLogin = true;
+  var _enteredName = '';
+  var _enteredEmail = '';
+  var _enteredPassword = '';
+
+  var _showPassword = false;
+  var _showConfirmPassword = false;
+
   @override
   Widget build(BuildContext context) {
     return Stack(
@@ -20,6 +34,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
           backgroundColor: Colors.transparent,
           body: SingleChildScrollView(
             child: Form(
+              key: _formKey,
               child: Container(
                 margin: const EdgeInsets.symmetric(horizontal: 20),
                 child: Column(
@@ -62,6 +77,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     ),
                     const SizedBox(height: 46),
                     TextFormField(
+                      autocorrect: false,
+                      textCapitalization: TextCapitalization.none,
                       decoration: const InputDecoration(
                         labelText: "Full Name",
                         hintText: "Enter your name",
@@ -81,9 +98,21 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         ),
                         contentPadding: EdgeInsets.all(5.0),
                       ),
-                    ),
+                      validator: (value) {
+                        if (value == null || value.trim().isEmpty) {
+                          return 'Please enter your name.';
+                        }
+                        return null;
+                      },
+                      onSaved: (value) {
+                        _enteredName = value!;
+                      },
+                    ), // Full Name
                     const SizedBox(height: 40),
                     TextFormField(
+                      keyboardType: TextInputType.emailAddress,
+                      autocorrect: false,
+                      textCapitalization: TextCapitalization.none,
                       decoration: const InputDecoration(
                         labelText: "Email",
                         hintText: "Enter your email",
@@ -103,59 +132,114 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         ),
                         contentPadding: EdgeInsets.all(5.0),
                       ),
-                    ),
+                      validator: (value) {
+                        if (value == null ||
+                            value.trim().isEmpty ||
+                            !value.contains('@') ||
+                            !value.contains('.')) {
+                          return 'Please enter a valid email address.';
+                        }
+                        return null;
+                      },
+                      onSaved: (value) {
+                        _enteredEmail = value!;
+                      },
+                    ), // Email
                     const SizedBox(height: 40),
                     TextFormField(
-                      decoration: const InputDecoration(
+                      controller: _pass,
+                      obscureText: !_showPassword,
+                      textCapitalization: TextCapitalization.none,
+                      decoration: InputDecoration(
                         labelText: "Password",
                         hintText: "Enter your password",
-                        focusedBorder: OutlineInputBorder(
+                        focusedBorder: const OutlineInputBorder(
                           borderSide:
                               BorderSide(color: Color(0xFF9747FF), width: 2.0),
                           borderRadius: BorderRadius.all(Radius.circular(20.0)),
                         ),
-                        enabledBorder: OutlineInputBorder(
+                        enabledBorder: const OutlineInputBorder(
                           borderSide:
                               BorderSide(color: Color(0xFF471AA0), width: 2.0),
                           borderRadius: BorderRadius.all(Radius.circular(20.0)),
                         ),
-                        prefixIcon: Icon(
+                        prefixIcon: const Icon(
                           Icons.lock_outlined,
                           color: Color(0xFF471AA0),
                         ),
-                        contentPadding: EdgeInsets.all(5.0),
-                        suffixIcon: Icon(
-                          Icons.remove_red_eye_outlined,
-                          color: Color(0x33000000),
+                        contentPadding: const EdgeInsets.all(5.0),
+                        suffixIcon: IconButton(
+                          onPressed: () {
+                            setState(() {
+                              _showPassword = !_showPassword;
+                            });
+                          },
+                          icon: Icon(
+                            _showPassword
+                                ? Icons.visibility_outlined
+                                : Icons.visibility_off_outlined,
+                            color: Color(0x33000000),
+                          ),
                         ),
                       ),
-                    ),
+                      validator: (value) {
+                        if (value == null ||
+                            value.trim().isEmpty ||
+                            value.trim().length < 6) {
+                          return 'Password must be at least 6 characters long.';
+                        }
+                        return null;
+                      },
+                    ), // Password
                     const SizedBox(height: 40),
                     TextFormField(
-                      decoration: const InputDecoration(
+                      controller: _confirmPass,
+                      obscureText: !_showConfirmPassword,
+                      textCapitalization: TextCapitalization.none,
+                      decoration: InputDecoration(
                         labelText: "Confirm Password",
                         hintText: "Confirm your password",
-                        focusedBorder: OutlineInputBorder(
+                        focusedBorder: const OutlineInputBorder(
                           borderSide:
                               BorderSide(color: Color(0xFF9747FF), width: 2.0),
                           borderRadius: BorderRadius.all(Radius.circular(20.0)),
                         ),
-                        enabledBorder: OutlineInputBorder(
+                        enabledBorder: const OutlineInputBorder(
                           borderSide:
                               BorderSide(color: Color(0xFF471AA0), width: 2.0),
                           borderRadius: BorderRadius.all(Radius.circular(20.0)),
                         ),
-                        prefixIcon: Icon(
+                        prefixIcon: const Icon(
                           Icons.lock_outlined,
                           color: Color(0xFF471AA0),
                         ),
-                        contentPadding: EdgeInsets.all(5.0),
-                        suffixIcon: Icon(
-                          Icons.remove_red_eye_outlined,
-                          color: Color(0x33000000),
+                        contentPadding: const EdgeInsets.all(5.0),
+                        suffixIcon: IconButton(
+                          onPressed: () {
+                            setState(() {
+                              _showConfirmPassword = !_showConfirmPassword;
+                            });
+                          },
+                          icon: Icon(
+                            _showConfirmPassword
+                                ? Icons.visibility_outlined
+                                : Icons.visibility_off_outlined,
+                            color: Color(0x33000000),
+                          ),
                         ),
                       ),
-                    ),
+                      validator: (value) {
+                        if (value == null ||
+                            value.trim().isEmpty ||
+                            value != _pass.text) {
+                          return 'Passwords do not match.';
+                        }
+                        return null;
+                      },
+                      onSaved: (value) {
+                        _enteredPassword = value!;
+                      },
+                    ), // Confirm Password
                     const SizedBox(height: 80),
                     ElevatedButton(
                       style: ElevatedButton.styleFrom(
@@ -166,10 +250,11 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         backgroundColor: const Color(0xFFBB84E8),
                       ),
                       onPressed: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => const LoginScreen()));
+                        _formKey.currentState!.validate();
+                        // Navigator.push(
+                        //     context,
+                        //     MaterialPageRoute(
+                        //         builder: (context) => const LoginScreen()));
                       },
                       child: const Text(
                         "Sign up",
