@@ -1,22 +1,21 @@
-import 'package:dsw_aplikacje_mobilne_projekt/database/note_db.dart';
-import 'package:dsw_aplikacje_mobilne_projekt/models/note_model.dart';
-import 'package:dsw_aplikacje_mobilne_projekt/screens/note_screen.dart';
-import 'package:dsw_aplikacje_mobilne_projekt/widgets/note_widget.dart';
+import 'package:dsw_aplikacje_mobilne_projekt/database/user_db.dart';
+import 'package:dsw_aplikacje_mobilne_projekt/models/user_model.dart';
+import 'package:dsw_aplikacje_mobilne_projekt/widgets/user_widget.dart';
 import 'package:flutter/material.dart';
 
-class NoteListWidget extends StatefulWidget {
-  const NoteListWidget({super.key});
+class UserListWidget extends StatefulWidget {
+  const UserListWidget({super.key});
 
   @override
-  State<NoteListWidget> createState() => _NoteListWidgetState();
+  State<UserListWidget> createState() => _UserListWidgetState();
 }
 
-class _NoteListWidgetState extends State<NoteListWidget> {
+class _UserListWidgetState extends State<UserListWidget> {
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<List<Note>?>(
-      future: NoteDatabase.getAllNotes(),
-      builder: (context, AsyncSnapshot<List<Note>?> snapshot) {
+    return FutureBuilder<List<User>?>(
+      future: UserDatabase.getAllUsers(),
+      builder: (context, AsyncSnapshot<List<User>?> snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return const CircularProgressIndicator();
         } else if (snapshot.hasError) {
@@ -28,33 +27,23 @@ class _NoteListWidgetState extends State<NoteListWidget> {
         } else if (snapshot.hasData) {
           if (snapshot.data != null) {
             return ListView.builder(
-              itemBuilder: (context, index) => NoteWidget(
-                note: snapshot.data![index],
-                onTap: () async {
-                  await Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => NoteScreen(
-                        note: snapshot.data![index],
-                      ),
-                    ),
-                  );
-                  setState(() {});
-                },
+              itemBuilder: (context, index) => UserWidget(
+                user: snapshot.data![index],
+                onTap: () {},
                 onLongPress: () async {
                   showDialog(
                     context: context,
                     builder: (context) {
                       return AlertDialog(
                         title: const Text(
-                            'Are you sure you want to delete this note?'),
+                            'Are you sure you want to delete this user?'),
                         actions: [
                           ElevatedButton(
                             style: ButtonStyle(
                                 backgroundColor:
                                     MaterialStateProperty.all(Colors.red)),
                             onPressed: () async {
-                              await NoteDatabase.deleteNote(
+                              await UserDatabase.deleteUser(
                                   snapshot.data![index]);
                               Navigator.pop(context);
                               setState(() {});

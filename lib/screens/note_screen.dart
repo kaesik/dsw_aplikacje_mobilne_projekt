@@ -1,10 +1,10 @@
+import 'package:dsw_aplikacje_mobilne_projekt/database/note_db.dart';
 import 'package:dsw_aplikacje_mobilne_projekt/models/note_model.dart';
-import 'package:dsw_aplikacje_mobilne_projekt/services/db_service.dart';
 import 'package:flutter/material.dart';
 
 class NoteScreen extends StatelessWidget {
   final Note? note;
-  const NoteScreen({Key? key, this.note}) : super(key: key);
+  const NoteScreen({super.key, this.note});
 
   @override
   Widget build(BuildContext context) {
@@ -87,9 +87,9 @@ class NoteScreen extends StatelessWidget {
                     final Note model = Note(
                         title: title, description: description, id: note?.id);
                     if (note == null) {
-                      await DatabaseService.addNote(model);
+                      await NoteDatabase.addNote(model);
                     } else {
-                      await DatabaseService.updateNote(model);
+                      await NoteDatabase.updateNote(model);
                     }
 
                     Navigator.pop(context);

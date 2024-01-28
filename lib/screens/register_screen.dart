@@ -1,8 +1,11 @@
+import 'package:dsw_aplikacje_mobilne_projekt/database/user_db.dart';
+import 'package:dsw_aplikacje_mobilne_projekt/models/user_model.dart';
 import 'package:dsw_aplikacje_mobilne_projekt/screens/login_screen.dart';
 import 'package:flutter/material.dart';
 
 class RegisterScreen extends StatefulWidget {
-  const RegisterScreen({super.key});
+  final User? user;
+  const RegisterScreen({super.key, this.user});
 
   @override
   State<RegisterScreen> createState() {
@@ -11,18 +14,73 @@ class RegisterScreen extends StatefulWidget {
 }
 
 class _RegisterScreenState extends State<RegisterScreen> {
+  User? user;
   final _formKey = GlobalKey<FormState>();
   final TextEditingController _name = TextEditingController();
   final TextEditingController _email = TextEditingController();
   final TextEditingController _pass = TextEditingController();
   final TextEditingController _confirmPass = TextEditingController();
 
-  var _enteredName = '';
-  var _enteredEmail = '';
-  var _enteredPassword = '';
-
   var _showPassword = false;
   var _showConfirmPassword = false;
+
+  signUp() async {
+    _formKey.currentState!.validate();
+    String name = _name.text;
+    String email = _email.text;
+    String password = _pass.text;
+    String cpassword = _confirmPass.text;
+
+    if (user != null) {
+      _name.text = user!.name;
+      _email.text = user!.email;
+      _pass.text = user!.password;
+      _confirmPass.text = user!.password;
+    }
+
+    if (_formKey.currentState!.validate()) {
+      if (password != cpassword) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Password Mismatch'),
+          ),
+        );
+      } else {
+        _formKey.currentState!.save();
+
+        print('name: $name');
+        print('email: $email');
+        print('password: $password');
+        print('cpassword: $cpassword');
+
+        User model = User(
+          name: name,
+          email: email,
+          password: password,
+          id: user?.id,
+        );
+        await UserDatabase.addUser(model).then(
+          (value) {
+            Navigator.pop(context);
+            return ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(
+                content: Text('Successfully Registered'),
+              ),
+            );
+          },
+        ).catchError(
+          (error) {
+            print('kaesik/ Error: $error');
+            return ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(
+                content: Text('Error: Data Save Fail'),
+              ),
+            );
+          },
+        );
+      }
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -106,9 +164,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         }
                         return null;
                       },
-                      onSaved: (value) {
-                        _enteredName = value!;
-                      },
                     ), // Full Name
                     const SizedBox(height: 40),
                     TextFormField(
@@ -143,9 +198,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           return 'Please enter a valid email address.';
                         }
                         return null;
-                      },
-                      onSaved: (value) {
-                        _enteredEmail = value!;
                       },
                     ), // Email
                     const SizedBox(height: 40),
@@ -239,9 +291,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         }
                         return null;
                       },
-                      onSaved: (value) {
-                        _enteredPassword = value!;
-                      },
                     ), // Confirm Password
                     const SizedBox(height: 80),
                     ElevatedButton(
@@ -252,13 +301,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         ),
                         backgroundColor: const Color(0xFFBB84E8),
                       ),
-                      onPressed: () async {
-                        _formKey.currentState!.validate();
-                        // Navigator.push(
-                        //     context,
-                        //     MaterialPageRoute(
-                        //         builder: (context) => const LoginScreen()));
-                      },
+                      onPressed: signUp,
                       child: const Text(
                         "Sign up",
                         style: TextStyle(
