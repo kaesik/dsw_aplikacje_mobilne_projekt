@@ -12,10 +12,11 @@ class RegisterScreen extends StatefulWidget {
 
 class _RegisterScreenState extends State<RegisterScreen> {
   final _formKey = GlobalKey<FormState>();
+  final TextEditingController _name = TextEditingController();
+  final TextEditingController _email = TextEditingController();
   final TextEditingController _pass = TextEditingController();
   final TextEditingController _confirmPass = TextEditingController();
 
-  var _isLogin = true;
   var _enteredName = '';
   var _enteredEmail = '';
   var _enteredPassword = '';
@@ -77,6 +78,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     ),
                     const SizedBox(height: 46),
                     TextFormField(
+                      controller: _name,
                       autocorrect: false,
                       textCapitalization: TextCapitalization.none,
                       decoration: const InputDecoration(
@@ -110,6 +112,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     ), // Full Name
                     const SizedBox(height: 40),
                     TextFormField(
+                      controller: _email,
                       keyboardType: TextInputType.emailAddress,
                       autocorrect: false,
                       textCapitalization: TextCapitalization.none,
@@ -249,7 +252,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         ),
                         backgroundColor: const Color(0xFFBB84E8),
                       ),
-                      onPressed: () {
+                      onPressed: () async {
                         _formKey.currentState!.validate();
                         // Navigator.push(
                         //     context,

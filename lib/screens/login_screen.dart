@@ -1,6 +1,7 @@
 import 'package:dsw_aplikacje_mobilne_projekt/screens/landing_screen.dart';
 import 'package:dsw_aplikacje_mobilne_projekt/screens/register_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -13,6 +14,18 @@ class LoginScreen extends StatefulWidget {
 
 class _LoginScreenState extends State<LoginScreen> {
   final _formKey = GlobalKey<FormState>();
+  final TextEditingController _email = TextEditingController();
+  final TextEditingController _pass = TextEditingController();
+
+  _getLogin() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String? email = prefs.getString('email');
+    String? pass = prefs.getString('pass');
+    if (email != null && pass != null) {
+      _email.text = email;
+      _pass.text = pass;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -44,6 +57,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
                 const SizedBox(height: 46),
                 TextFormField(
+                  controller: _email,
                   keyboardType: TextInputType.emailAddress,
                   autocorrect: false,
                   textCapitalization: TextCapitalization.none,
@@ -77,6 +91,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
                 const SizedBox(height: 40),
                 TextFormField(
+                  controller: _pass,
                   obscureText: true,
                   textCapitalization: TextCapitalization.none,
                   decoration: const InputDecoration(
