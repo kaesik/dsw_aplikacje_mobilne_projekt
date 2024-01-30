@@ -102,8 +102,8 @@ class _LoginScreenState extends State<LoginScreen> {
             body: SingleChildScrollView(
               child: Form(
                 key: _formKey,
-                child: Container(
-                  margin: const EdgeInsets.symmetric(horizontal: 20),
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 20),
                   child: Column(
                     children: [
                       const SizedBox(height: 60),

@@ -18,7 +18,14 @@ class NoteScreen extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(note == null ? 'Add a note' : 'Edit note'),
+        title: Text(
+          note == null ? 'Add a note' : 'Edit note',
+          style: const TextStyle(
+            color: Color(0xFF471AA0),
+            fontSize: 24,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
         centerTitle: true,
       ),
       body: Padding(
@@ -40,31 +47,35 @@ class NoteScreen extends StatelessWidget {
                 controller: titleController,
                 maxLines: 1,
                 decoration: const InputDecoration(
-                    hintText: 'Title',
-                    labelText: 'Note title',
-                    border: OutlineInputBorder(
-                        borderSide: BorderSide(
-                          color: Colors.white,
-                          width: 0.75,
-                        ),
-                        borderRadius: BorderRadius.all(
-                          Radius.circular(10.0),
-                        ))),
+                  hintText: 'Title',
+                  labelText: 'Note title',
+                  focusedBorder: OutlineInputBorder(
+                    borderSide:
+                        BorderSide(color: Color(0xFF9747FF), width: 2.0),
+                    borderRadius: BorderRadius.all(Radius.circular(20.0)),
+                  ),
+                  enabledBorder: OutlineInputBorder(
+                    borderSide:
+                        BorderSide(color: Color(0xFF471AA0), width: 2.0),
+                    borderRadius: BorderRadius.all(Radius.circular(20.0)),
+                  ),
+                ),
               ),
             ),
             TextFormField(
               controller: descriptionController,
               decoration: const InputDecoration(
-                  hintText: 'Type here the note',
-                  labelText: 'Note description',
-                  border: OutlineInputBorder(
-                      borderSide: BorderSide(
-                        color: Colors.white,
-                        width: 0.75,
-                      ),
-                      borderRadius: BorderRadius.all(
-                        Radius.circular(10.0),
-                      ))),
+                hintText: 'Type the note here',
+                labelText: 'Note description',
+                focusedBorder: OutlineInputBorder(
+                  borderSide: BorderSide(color: Color(0xFF9747FF), width: 2.0),
+                  borderRadius: BorderRadius.all(Radius.circular(20.0)),
+                ),
+                enabledBorder: OutlineInputBorder(
+                  borderSide: BorderSide(color: Color(0xFF471AA0), width: 2.0),
+                  borderRadius: BorderRadius.all(Radius.circular(20.0)),
+                ),
+              ),
               keyboardType: TextInputType.multiline,
               onChanged: (str) {},
               maxLines: 5,
@@ -81,6 +92,11 @@ class NoteScreen extends StatelessWidget {
                     final description = descriptionController.value.text;
 
                     if (title.isEmpty || description.isEmpty) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                          content: Text('Please fill all the fields'),
+                        ),
+                      );
                       return;
                     }
 
@@ -94,22 +110,20 @@ class NoteScreen extends StatelessWidget {
 
                     Navigator.pop(context);
                   },
-                  style: ButtonStyle(
-                    shape: MaterialStateProperty.all(
-                      const RoundedRectangleBorder(
-                        side: BorderSide(
-                          color: Colors.white,
-                          width: 0.75,
-                        ),
-                        borderRadius: BorderRadius.all(
-                          Radius.circular(10.0),
-                        ),
-                      ),
+                  style: ElevatedButton.styleFrom(
+                    minimumSize: const Size.fromHeight(50),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(20),
                     ),
+                    backgroundColor: const Color(0xFFBB84E8),
                   ),
                   child: Text(
                     note == null ? 'Save' : 'Edit',
-                    style: const TextStyle(fontSize: 20),
+                    style: const TextStyle(
+                      fontSize: 20,
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
                 ),
               ),
