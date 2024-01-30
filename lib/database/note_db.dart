@@ -2,15 +2,23 @@ import 'package:dsw_aplikacje_mobilne_projekt/models/note_model.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 
-class DatabaseService {
+class NoteDatabase {
   static const int _version = 1;
   static const String _dbName = "Notes.db";
 
+  static const table = 'Note';
+  static const columnId = 'id';
+  static const columnTitle = 'title';
+  static const columnDescription = 'description';
+
   static Future<Database> _getDB() async {
     return openDatabase(join(await getDatabasesPath(), _dbName),
-        onCreate: (db, version) async => await db.execute(
-            "CREATE TABLE Note(id INTEGER PRIMARY KEY, title TEXT NOT NULL, description TEXT NOT NULL);"),
-        version: _version);
+        onCreate: (db, version) async => await db.execute('''
+            CREATE TABLE $table (
+            $columnId INTEGER PRIMARY KEY, 
+            $columnTitle TEXT NOT NULL, 
+            $columnDescription TEXT NOT NULL
+            );'''), version: _version);
   }
 
   static Future<int> addNote(Note note) async {
